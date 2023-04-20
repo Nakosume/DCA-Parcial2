@@ -1,5 +1,5 @@
 import "./components/export"
-import { getCatg } from "./service/getCatg";
+import { getCatg, getJoke } from "./service/getCatg";
 import { AttributeDisplay } from "./components/display/display";
 
 export enum AttributeCont{
@@ -23,18 +23,22 @@ class AppContainer extends HTMLElement {
 
     render(data:any) {
         const something = this.ownerDocument.createElement('div');
+        const dispJoke = this.ownerDocument.createElement('app-display')
 
-        data.forEach((e:any)=>{
+        data.forEach((e:string)=>{
             const button = this.ownerDocument.createElement('button');
             button.innerText=e;
-            button.addEventListener("click",()=>console.log(button.innerText))
+            button.addEventListener("click",async ()=>{
+                const joka= await getJoke(e);
+                dispJoke.setAttribute("in_text",joka)
+            })
             
             something.appendChild(button);
         }            
         )
 
-        const dispJoke = this.ownerDocument.createElement('app-display')
-        dispJoke.setAttribute("in_text","hello")
+        
+        
         something.appendChild(dispJoke);
 
         this.shadowRoot?.appendChild(something);
